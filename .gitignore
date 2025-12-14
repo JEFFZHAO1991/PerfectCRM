@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# 虚拟环境
+venv/
+.venv/
+
+# 数据库（你现在用 MySQL, 可以忽略本地 sqlite）
+db.sqlite3
+
+# Django 相关
+*.log
+staticfiles/
+media/
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# 其他
+.env
