@@ -20,10 +20,14 @@ from django.urls import path
 from CRM import views
 
 urlpatterns = [
-    path('', views.index, name='index'),              # http://127.0.0.1:8000/CRM/
-    path('index.html', views.index, name='index_html'), # http://127.0.0.1:8000/CRM/index.html
-    path('', views.index, name='sales_index'),
-    path('customers/', views.index, name='customer_list'),
+    # 首页（你原来的 index）
+    path('', views.index, name='index'),                    # /CRM/ 或根路径 include 时用
+    path('index.html', views.index, name='index_html'),     # /CRM/index.html
 
+    # 客户列表
+    path('customers/', views.customer_list, name='customer_list'),
+
+    # 文本生成 API
+    path('api/generate/', views.generate_text, name='api_generate'),
 ]
 
