@@ -25,7 +25,11 @@ SECRET_KEY = "django-insecure-ht8^hwe=cz_ufe6fhq7_i*v)ux+lrh+bv1hod+u4arqlwm8=d4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [    '20.70.128.28',       # 你的 Azure 公网 IP
+    '127.0.0.1',          # 本地回环地址
+    'localhost',          # 本机
+    'mygarden123.com',    # 你的域名
+    'www.mygarden123.com',]
 
 
 # Application definition
@@ -83,17 +87,18 @@ WSGI_APPLICATION = "Perfect_CRM.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'perfect_crm',      # 你刚才在 MySQL 里创建的库名
-        'USER': 'root',             # 或者你自己的 MySQL 用户名
-        'PASSWORD': 'Zjf19910425~', # 改成你的实际密码
-        'HOST': '127.0.0.1',        # 本机
-        'PORT': '3306',             # MySQL 默认端口，如果你安装时没改就是 3306
+        'NAME': 'perfect_crm',
+        'USER': 'perfectcrm_user',          # 不要再用 root
+        'PASSWORD': 'Zjf19910425~',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
         'OPTIONS': {
             'charset': 'utf8mb4',
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },
     }
 }
+
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "AIzaSyAArJu0B0BLE5eKCpFXTZ7xjE5mO9hm0Ys")
 
