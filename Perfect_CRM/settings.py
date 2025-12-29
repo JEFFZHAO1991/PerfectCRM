@@ -25,7 +25,11 @@ SECRET_KEY = "django-insecure-ht8^hwe=cz_ufe6fhq7_i*v)ux+lrh+bv1hod+u4arqlwm8=d4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [    '20.70.128.28',       # 你的 Azure 公网 IP
+    '127.0.0.1',          # 本地回环地址
+    'localhost',          # 本机
+    'mygarden123.com',    # 你的域名
+    'www.mygarden123.com',]
 
 
 # Application definition
