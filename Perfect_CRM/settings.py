@@ -87,13 +87,12 @@ WSGI_APPLICATION = "Perfect_CRM.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'perfect_crm',      # 你刚才在 MySQL 里创建的库名
-        'USER': 'root',             # 或者你自己的 MySQL 用户名
-        'PASSWORD': 'Zjf19910425~', # 改成你的实际密码
-        'HOST': '127.0.0.1',        # 本机
-        'PORT': '3306',             # MySQL 默认端口，如果你安装时没改就是 3306
+        'NAME': 'perfectcrm',          # 你真实建的库名
+        'USER': 'perfectcrm_user',     # ← 这里改成非 root 的那个用户
+        'PASSWORD': 'Zjf19910425~',    # 你给这个用户设置的密码
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
         'OPTIONS': {
-            'charset': 'utf8mb4',
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },
     }
