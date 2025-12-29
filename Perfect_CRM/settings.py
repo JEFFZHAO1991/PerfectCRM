@@ -95,10 +95,7 @@ DATABASES = {
     }
 }
 
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
-if not GEMINI_API_KEY:
-    # 可选：启动时报错，提醒你没配置环境变量
-    raise RuntimeError("GEMINI_API_KEY is not set in environment variables")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "AIzaSyAArJu0B0BLE5eKCpFXTZ7xjE5mO9hm0Ys")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
