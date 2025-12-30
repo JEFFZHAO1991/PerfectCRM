@@ -5,28 +5,36 @@ from django.conf import settings
 import requests
 import json
 
-# Create your views here.
+# ================== 普通页面视图 ==================
+
 def index(request):
     return render(request, "index.html")
 
 def customer_list(request):
     return render(request, "sales/customers.html")
 
+def ai_page(request):
+    """
+    单独的 AI 文本生成页面视图
+    """
+    return render(request, "ai_generate.html")
 
-# ========= 下面是文本生成 API 部分 =========
 
-# Google Gemini 文本接口地址（你给的那个）
+# ================== 文本生成 API 部分 ==================
+
+# 建议先用 1.5 版本（一般 free tier 都支持），后面你也可以改回 2.0
 GEMINI_API_URL = (
-    "https://generativelanguage.googleapis.com/v1beta/models/"
-    "gemini-2.0-flash:generateContent"
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
 )
+# 如果你确认文档要求用 -latest，也可以换成：
+# "gemini-1.5-flash-latest:generateContent"
 
 @csrf_exempt
 def generate_text(request):
     """
     POST /api/generate/
     接收: prompt (文字)
-    调用 Google Gemini 免费模型，返回生成的文本：
+    调用 Google Gemini 文本模型，返回生成的文本：
     { "text": "..." }
     """
     if request.method != "POST":
@@ -35,8 +43,8 @@ def generate_text(request):
     # 1. 从表单或 JSON 里取 prompt
     prompt = request.POST.get("prompt")
 
-    # 如果不是 form 提交，可能是 application/json，就从 body 里解析
     if not prompt:
+        # 可能是 application/json 方式
         try:
             body = request.body.decode("utf-8") or "{}"
             data = json.loads(body)
@@ -47,7 +55,7 @@ def generate_text(request):
     if not prompt:
         return JsonResponse({"error": "prompt required"}, status=400)
 
-    # 2. 从 settings 里取你的 API Key（稍后在 settings.py 里配置）
+    # 2. 从 settings 里取你的 API Key（settings.py 里要有 GEMINI_API_KEY）
     api_key = getattr(settings, "GEMINI_API_KEY", None)
     if not api_key:
         return JsonResponse(
@@ -71,13 +79,14 @@ def generate_text(request):
 
     headers = {
         "Content-Type": "application/json",
-        "X-goog-api-key": api_key,
+        # 也可以不用 header 传 key，只用 URL ?key=...
+        # "x-goog-api-key": api_key,
     }
 
-    # 4. 调用 Gemini 接口
+    # 4. 调用 Gemini 接口（关键：这里统一用 api_key，不要用硬编码）
     try:
         resp = requests.post(
-            GEMINI_API_URL,
+            GEMINI_API_URL + f"?key={api_key}",
             headers=headers,
             json=payload,
             timeout=60,
@@ -88,6 +97,7 @@ def generate_text(request):
             status=502,
         )
 
+    # 5. 处理非 200 情况，直接把 Google 返回的内容给前端看
     if resp.status_code != 200:
         return JsonResponse(
             {
@@ -100,7 +110,7 @@ def generate_text(request):
 
     data = resp.json()
 
-    # 5. 从返回结果里把文本抽出来（简单版）
+    # 6. 从返回结果里把文本抽出来（简单版）
     text = ""
     try:
         candidates = data.get("candidates", [])

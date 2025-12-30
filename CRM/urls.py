@@ -29,5 +29,6 @@ urlpatterns = [
 
     # 文本生成 API
     path('api/generate/', views.generate_text, name='api_generate'),
+    path('ai/', views.ai_page, name='ai_page'),
 ]
 
